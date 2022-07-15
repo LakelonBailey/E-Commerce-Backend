@@ -1,18 +1,65 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
-
+const productAttr = ['id', 'product_name', 'price', 'stock', 'category_id']
+const tagAttr = ['id', 'tag_name']
+const categoryAttr = ['id', 'category_name']
 // The `/api/products` endpoint
 
 // get all products
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+  Product.findAll({
+    attributes: productAttr,
+    include: [
+      {
+        model: Category,
+        attributes: categoryAttr
+      },
+      {
+        model: Tag,
+        attributes: tagAttr,
+        through: ProductTag,
+        as: 'tags'
+      }
+    ]
+  })
+  .then(dbProductData => res.json(dbProductData))
+  .catch((err) => {
+    console.log(err);
+    res.status(400).json(err);
+  });
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  Product.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: productAttr,
+    include: [
+      {
+        model: Category,
+        attributes: categoryAttr
+      },
+      {
+        model: Tag,
+        attributes: tagAttr,
+        through: ProductTag,
+        as: 'tags'
+      }
+    ]
+  })
+  .then(dbProductData => {
+    if (!dbProductData) {
+      res.status(404).json({message: 'No product found with this id'})
+    }
+    res.json(dbProductData)
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(400).json(err);
+  });
+  
 });
 
 // create new product
@@ -84,13 +131,27 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
 
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbProductData => {
+    if (!dbProductData) {
+      res.status(404).json({message: 'No product found with this id'})
+    }
+    res.json(dbProductData)
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(400).json(err);
+  });
 });
 
 module.exports = router;
