@@ -5,7 +5,7 @@ const tagAttr = ['id', 'tag_name']
 const categoryAttr = ['id', 'category_name']
 // The `/api/products` endpoint
 
-// get all products
+// Gets all products
 router.get('/', (req, res) => {
   Product.findAll({
     attributes: productAttr,
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// get one product
+// Gets one product by its
 router.get('/:id', (req, res) => {
   Product.findOne({
     where: {
@@ -62,7 +62,7 @@ router.get('/:id', (req, res) => {
   
 });
 
-// create new product
+// Creates a new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -94,7 +94,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+// Updates a product by its id
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -136,6 +136,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// Deletes a product by its id
 router.delete('/:id', (req, res) => {
   Product.destroy({
     where: {

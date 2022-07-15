@@ -5,6 +5,8 @@ const categoryAttr = ['id', 'category_name']
 
 // The `/api/categories` endpoint
 
+
+// Gets all categories
 router.get('/', (req, res) => {
   Category.findAll({
     attributes: categoryAttr,
@@ -21,6 +23,8 @@ router.get('/', (req, res) => {
 
 });
 
+
+// Gets one category by its id
 router.get('/:id', (req, res) => {
   Category.findOne({
     where: {
@@ -44,6 +48,8 @@ router.get('/:id', (req, res) => {
   })
 });
 
+
+// Creates a new category
 router.post('/', (req, res) => {
   Category.create(req.body)
   .then(dbCategoryData => res.json(dbCategoryData))
@@ -53,6 +59,8 @@ router.post('/', (req, res) => {
   })
 });
 
+
+// Updates a category by its id
 router.put('/:id', (req, res) => {
   Category.update(req.body, {
       where: {
@@ -71,6 +79,8 @@ router.put('/:id', (req, res) => {
     })
 });
 
+
+// Deletes a category by its id
 router.delete('/:id', (req, res) => {
   Category.destroy({
       where: {

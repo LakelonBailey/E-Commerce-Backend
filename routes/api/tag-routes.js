@@ -5,6 +5,8 @@ const tagAttr = ['id', 'tag_name']
 
 // The `/api/tags` endpoint
 
+
+// Gets all tags
 router.get('/', (req, res) => {
   Tag.findAll({
     attributes: tagAttr,
@@ -24,6 +26,8 @@ router.get('/', (req, res) => {
   })
 });
 
+
+// Gets one tag by its id
 router.get('/:id', (req, res) => {
   Tag.findOne({
     where: {
@@ -51,6 +55,8 @@ router.get('/:id', (req, res) => {
   })
 });
 
+
+// Creates a new tag
 router.post('/', (req, res) => {
   Tag.create(req.body)
   .then(dbTagData => res.json(dbTagData))
@@ -60,6 +66,8 @@ router.post('/', (req, res) => {
   })
 });
 
+
+// Updates a tag by its id
 router.put('/:id', (req, res) => {
   Tag.update(req.body, {
     where : {
@@ -78,6 +86,8 @@ router.put('/:id', (req, res) => {
   })
 });
 
+
+// Deletes a tag by its id
 router.delete('/:id', (req, res) => {
   Tag.destroy({
     where : {
